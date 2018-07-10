@@ -19,7 +19,7 @@ API Set as https://localhost:44394/ (44353)
 *Use MMC plugin to install cert on computer and user account.*
 
 1. #4 Setthe defaults of the serve command (angular-cli.json)
-`
+```
      },
   "defaults": {
     "styleExt": "css",
@@ -28,7 +28,7 @@ API Set as https://localhost:44394/ (44353)
       "sslCert": "certificate.pem",
       "sslKey": "privatekey.key"
     },
-`
+````
 ## Add project IdentityServer
 
 ## Creating an OpenID Connect Service
