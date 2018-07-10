@@ -17,7 +17,7 @@ namespace Marvin.IDP
                     SubjectId = "fec0a4d6-5830-4eb8-8024-272bd5d6d2bb",
                     Username = "Kevin",
                     Password = "password",
-                    Claims = new List<Claim>
+                    Claims = new List<Claim>  //maps to scopes (one or more)
                     {
                         new Claim("given_name", "Kevin"),
                         new Claim("family_name", "Dockx"),
@@ -38,7 +38,7 @@ namespace Marvin.IDP
                 }
             };
         }
-
+        //identity scopes
         public static List<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
@@ -48,7 +48,7 @@ namespace Marvin.IDP
                new IdentityResource("roles", "Your role(s)", new []{"role"}),
             };
         }
-
+        //resoure scopes
         internal static IEnumerable<ApiResource> GetApiResources()
         {
             return new[] {
@@ -64,7 +64,7 @@ namespace Marvin.IDP
                 {
                     ClientName = "Tour Management",
                     ClientId="tourmanagementclient",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.Implicit, //Angular client
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =new List<string>
