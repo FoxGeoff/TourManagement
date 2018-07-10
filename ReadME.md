@@ -100,7 +100,7 @@ export class OpenIdConnectService {
 }
 ```
 1. #1 Now initialise the UserManger (open-id-connect.services.ts)
-```private userManager: UserManager =  new UserManager(environment.openIdConnectSettings);
+```private userManager: UserManager =  new UserManager(environment.openIdConnectSettings);```
 1. #2 app.module.ts ADD OpenIdConnectService
 ```
 providers: [
