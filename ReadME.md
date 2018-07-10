@@ -15,12 +15,12 @@ API Set as https://localhost:44394/ (44353)
 1. #2 Get Cert from code: certicate.pem and privatekey.key
 1. #3 ng serve --ssl 1 -o --ssl-key privatekey.key --ssl-cert certificate.pem
 
-*Note: SSL self signed cert works in Chrome, not Edge or Firefox*
-*Use MMC plugin to install cert on computer and user account.*
+*Note: SSL self signed cert works in Chrome, not Edge or Firefox.*
+* Use MMC plugin to install cert on computer and user account.*
 
 1. #4 Setthe defaults of the serve command (angular-cli.json)
 ```
-     },
+   },
   "defaults": {
     "styleExt": "css",
     "serve": {
@@ -32,3 +32,94 @@ API Set as https://localhost:44394/ (44353)
 ## Add project IdentityServer
 
 ## Creating an OpenID Connect Service
+1. Add oidc-client
+```
+PS npm install oidc-client --save 
+PS ng  g service OpenIdConnect
+```
+### environment.ts
+```
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:44394/api/', // API
+  openIdConnectSettings: {
+    authority: 'https://localhost:44398/', // IDP
+    client_id: 'tourmanagementclient',
+    redirect_uri: 'https://localhost:4200/signin-oidc', // Angular
+    scope: 'openid profile roles',
+    response_type: 'id_token' // implict flow on access token
+  }
+};
+```
+### open-id-connect.services.ts
+```
+import { Injectable } from '@angular/core';
+import { UserManager, User} from 'oidc-client'
+import { environment } from '../environments/environment';
+
+@Injectable()
+export class OpenIdConnectService {
+
+  private useManager: UserManager;
+  private currentUser:  User;
+
+  get userAvailable(): boolean {
+    return this.currentUser != null;
+  }
+
+  get use(): User {
+    return this.currentUser;
+  }
+
+  constructor() {
+    this.useManager.clearStaleState();
+
+    this.useManager.events.addUserLoaded(user => {
+      if (!environment.production){
+        console.log('User loaded.', user);
+      }
+      this.currentUser = user;
+    });
+   }
+
+  triggerSignIn(){
+    this.useManager.signinRedirect().then(function (){
+      if (!environment.production){
+        console.log('==> Redirection to signin triggered.');
+      }
+    });
+  }
+
+  handleCallBack(){
+    this.useManager.signinRedirectCallback().then(function(user){
+      if(!environment.production){
+        console.log('==> Callback after signin handled', user);
+      }
+    });
+  }
+}
+```
+1. #1 Now initialise the UserManger (open-id-connect.services.ts)
+```private userManager: UserManager =  new UserManager(environment.openIdConnectSettings);
+1. #2 app.module.ts ADD OpenIdConnectService
+```
+providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: EnsureAcceptHeaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: WriteOutJsonInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HandleHttpErrorInterceptor,
+      multi: true,
+    },
+    GlobalErrorHandler, ErrorLoggerService, TourService, MasterDataService, ShowService, DatePipe, OpenIdConnectService],
+```
+## Adding a Callback Page
+
