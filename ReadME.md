@@ -123,3 +123,30 @@ providers: [
 ```
 ## Adding a Callback Page
  7/10/2018 contributor FoxGeoff
+ 1. ```> ng g component SigninOidc ```
+ 1. signin-oidc.component.ts
+ ```
+import { Component, OnInit } from '@angular/core';
+import { OpenIdConnectService } from '../open-id-connect.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-signin-oidc',
+  templateUrl: './signin-oidc.component.html',
+  styleUrls: ['./signin-oidc.component.css']
+})
+export class SigninOidcComponent implements OnInit {
+
+  constructor(private openIdConnectService: OpenIdConnectService, private router: Router) { }
+
+  ngOnInit() {
+    this.openIdConnectService.handleCallBack();
+    this.router.navigate(['./']);
+  }
+}
+```
+1. app.routing.ts
+```
+{ path: 'signin-oidc', component: SigninOidcComponent }
+```
+ 7/10/2018 contributor FoxGeoff
