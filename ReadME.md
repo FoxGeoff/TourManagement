@@ -11,13 +11,15 @@ API Set as https://localhost:44394/ (44353)
 
 ## Client setup SSL:
 
-#1 Set this in enviroment.ts:  apiUrl: 'https://localhost:44394'
-#2 Get Cert from code: certicate.pem and privatekey.key
-#3 ng serve --ssl 1 -o --ssl-key privatekey.key --ssl-cert certificate.pem
-Note: SSL self signed cert works in Chrome, not Edge or Firefox
-	Use MMC plugin to install cert on computer and user account.
-#4 Setthe defaults of the serve command (angular-cli.json)
+1. #1 Set this in enviroment.ts:  apiUrl: 'https://localhost:44394'
+1. #2 Get Cert from code: certicate.pem and privatekey.key
+1. #3 ng serve --ssl 1 -o --ssl-key privatekey.key --ssl-cert certificate.pem
 
+*Note: SSL self signed cert works in Chrome, not Edge or Firefox*
+*Use MMC plugin to install cert on computer and user account.*
+
+1. #4 Setthe defaults of the serve command (angular-cli.json)
+`
      },
   "defaults": {
     "styleExt": "css",
@@ -26,7 +28,7 @@ Note: SSL self signed cert works in Chrome, not Edge or Firefox
       "sslCert": "certificate.pem",
       "sslKey": "privatekey.key"
     },
-
+`
 ## Add project IdentityServer
 
 ## Creating an OpenID Connect Service
