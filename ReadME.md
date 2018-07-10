@@ -149,4 +149,4 @@ export class SigninOidcComponent implements OnInit {
 ```
 { path: 'signin-oidc', component: SigninOidcComponent }
 ```
- 7/10/2018 contributor FoxGeoff
+ 7/10/2018 contributor FoxGeoff.
