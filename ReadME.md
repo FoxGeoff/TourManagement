@@ -122,4 +122,4 @@ providers: [
     GlobalErrorHandler, ErrorLoggerService, TourService, MasterDataService, ShowService, DatePipe, OpenIdConnectService],
 ```
 ## Adding a Callback Page
-
+ 7/10/2018 contributor FoxGeoff
