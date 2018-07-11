@@ -21,7 +21,7 @@ export class OpenIdConnectService {
 
     this.useManager.events.addUserLoaded(user => {
       if (!environment.production){
-        console.log('User loaded.', user);
+        console.log('==> User loaded.', user);
       }
       this.currentUser = user;
     });

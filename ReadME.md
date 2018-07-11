@@ -152,5 +152,27 @@ export class SigninOidcComponent implements OnInit {
 ## Sign In
 1. app.component.ts
 ```
+import { Component } from '@angular/core';
+import {  } from "automapper-ts";
+import { OpenIdConnectService } from './open-id-connect.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'Pluralsight Demo'; 
+  
+  constructor(private openIdConnectService: OpenIdConnectService){}
+
+  ngOnInit(){
+    var path = window.location.pathname;
+    if(path != "/signin-oidc") {
+      this.openIdConnectService.triggerSignIn();
+    }
+  }
+}
 
 ```
+1. Check the token content with https://jwt.io
