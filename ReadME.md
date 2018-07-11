@@ -29,6 +29,8 @@ API Set as https://localhost:44394/ (44353)
       "sslKey": "privatekey.key"
     },
 ````
+1. #5 ```ng serve -ss 1 -o --ssl-key private.key --ssl-cert certificate.pem```
+
 ## Add project IdentityServer
 
 ## Creating an OpenID Connect Service
@@ -176,3 +178,47 @@ export class AppComponent {
 
 ```
 1. Check the token content with https://jwt.io
+
+## Sign out
+1. #1 Environment.ts Add:
+```post_logout_redirect_uri: 'https://localhost:4200/',```
+1. #2 open-id-connect.services
+```
+private useManager: UserManager =  new UserManager(environment.openIdConnectSettings);
+``
+```
+
+ this.useManager.events.addUserLoaded(user => {
+      if (!environment.production){
+        console.log('==> User loaded.', user);
+      }
+      this.currentUser = user;
+    });
+	//Add here...
+    this.useManager.events.addUserUnloaded((e) => {
+      if (!environment.production) {
+        console.log('User unloaded');
+      }
+      this.currentUser = null;
+    });
+``
+```
+
+triggerSignOut() {
+    this.useManager.signoutRedirect().then(function (resp) {
+      if (!environment.production) {
+        console.log('=> Redirection to sign out triggered.', resp);
+      }
+    });
+  };
+```
+1. #3 app.component.html
+```
+<ul class='nav navbar-nav'>
+              <li><a [routerLink]="['/tours']">Tour Management</a></li>
+              <li><a [routerLink]="['/about']">About</a></li>
+              <li *ngIf='openIdConnectService.userAvailable'>
+                <a (click)="openIdConnectService.triggerSignOut()">Sign out</a>
+            </li>
+          </ul>
+```

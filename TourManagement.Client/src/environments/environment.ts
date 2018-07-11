@@ -11,6 +11,7 @@ export const environment = {
     client_id: 'tourmanagementclient',
     redirect_uri: 'https://localhost:4200/signin-oidc', // Angular
     scope: 'openid profile roles',
-    response_type: 'id_token' // implict flow on access token
+    response_type: 'id_token', // implict flow on access token
+    post_logout_redirect_uri: 'https://localhost:4200/',
   }
 };
