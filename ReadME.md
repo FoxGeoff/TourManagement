@@ -353,3 +353,31 @@ ngOnInit(){
     }
   }
 ```
+
+## Using Ientity Claims in Our Application
+
+1. In the tour-add-component.ts (we are now checking the user's role')
+```
+private isAdmin: boolean =
+    (this.openIdConnectService.use.profile.role === "Administrator");
+```
+1. DI OpenIdConnectService
+```
+constructor(private masterDataService: MasterDataService,
+    private tourService: TourService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private openIdConnectService: OpenIdConnectService) { }
+```
+***
+* OpenID Connect is an Identity layer on top of the OAuth 2.0 protocol 
+1. Authentication
+* OAuth 2.0 is an open protocol to allow secure authorization from web, mobil and desktop applications
+1. Authorization
+1. Access tokens (identy tokens are uae at the level of the client app.)
+* An Angular client is a public client
+1. Implict flow
+* We cannot protect code that is already on the client.
+1. We can protect code on the API (next step)
+
+# Authorization: Securing the API
