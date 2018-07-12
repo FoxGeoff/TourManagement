@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {  } from "automapper-ts";
-import { OpenIdConnectService } from './open-id-connect.service';
+import { OpenIdConnectService } from './shared/open-id-connect.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,4 @@ export class AppComponent {
   
   constructor(private openIdConnectService: OpenIdConnectService){}
 
-  ngOnInit(){
-    var path = window.location.pathname;
-    if(path != "/signin-oidc") {
-      this.openIdConnectService.triggerSignIn();
-    }
-  }
 }
