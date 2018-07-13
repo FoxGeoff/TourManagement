@@ -354,7 +354,7 @@ ngOnInit(){
   }
 ```
 
-## Using Ientity Claims in Our Application
+## Using Identity Claims in Our Application
 
 1. In the tour-add-component.ts (we are now checking the user's role')
 ```
@@ -427,4 +427,4 @@ namespace TourManagement.API.Controllers
 ```
 repeat for each controller class
 
-## Requesting an Acess Token with the COrect Audience
+## Requesting an Acess Token with the Correct Audience
