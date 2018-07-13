@@ -371,13 +371,60 @@ constructor(private masterDataService: MasterDataService,
 ```
 ***
 * OpenID Connect is an Identity layer on top of the OAuth 2.0 protocol 
-1. Authentication
+	1. Authentication
 * OAuth 2.0 is an open protocol to allow secure authorization from web, mobil and desktop applications
-1. Authorization
-1. Access tokens (identy tokens are uae at the level of the client app.)
+	1. Authorization
+	1. Access tokens (identy tokens are uae at the level of the client app.)
 * An Angular client is a public client
-1. Implict flow
+	1. Implict flow
 * We cannot protect code that is already on the client.
-1. We can protect code on the API (next step)
+	1. We can protect code on the API (next step)
 
 # Authorization: Securing the API
+## Coming Up
+* Using OpenID Connect for Authentication and Authorization
+* Blocking and Gaining Access to th API
+* Handling Token Expiration
+
+*Implicit Flow*
+* OpenID Connect is the superior protocol
+	* via front channel - Identity token can be linked to access token (at_hash)
+	* Identiy token can be verified first
+
+## Blocking Access to the API
+
+1. Add Nuget Package: IdentityServer4.AccessTokenValidation (to TourManagement.API)
+1. In Startup.cs
+```public void ConfigureServices(IServiceCollection services)
+{
+...
+//register Authentication Service
+services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+    .AddIdentityServerAuthentication(options =>
+    {
+        options.Authority = "https://localhost:44398/";
+        options.ApiName = "tourmanagementapi";
+    });
+}
+```
+```
+public void Configure(IApplicationBuilder app, IHostingEnvironment env){
+...
+
+// Enable CORS
+    app.UseCors("AllowAllOriginsHeadersAndMethods");
+
+    app.UseAuthentication();
+
+    app.UseMvc();
+```
+On the controller class
+```
+namespace TourManagement.API.Controllers
+{
+    [Route("api/tours")]
+    [Authorize]
+```
+repeat for each controller class
+
+## Requesting an Acess Token with the COrect Audience

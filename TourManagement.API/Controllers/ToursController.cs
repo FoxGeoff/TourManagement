@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -13,6 +14,7 @@ using TourManagement.API.Services;
 namespace TourManagement.API.Controllers
 {
     [Route("api/tours")]
+    [Authorize]
     public class ToursController : Controller
     {
         private readonly ITourManagementRepository _tourManagementRepository;

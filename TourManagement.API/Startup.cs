@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -94,6 +95,14 @@ namespace TourManagement.API
 
             // register the user info service
             services.AddScoped<IUserInfoService, UserInfoService>();
+
+            //register Authentication Service
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://localhost:44398/";
+                    options.ApiName = "tourmanagementapi";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -146,6 +155,9 @@ namespace TourManagement.API
 
             // Enable CORS
             app.UseCors("AllowAllOriginsHeadersAndMethods");
+
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }

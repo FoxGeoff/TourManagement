@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using TourManagement.API.Services;
 namespace TourManagement.API.Controllers
 {
     [Route("api/bands")]
+    [Authorize]
     public class BandsController : Controller
     {
         private readonly ITourManagementRepository _tourManagementRepository;
