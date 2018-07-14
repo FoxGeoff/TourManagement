@@ -480,3 +480,67 @@ export class AddAuthorizationHeaderInterceptor implements HttpInterceptor {
     {
 ```
 1. Test we now see tour details - Good to go!
+
+## Using Clains from the Access Token
+
+We see all the tour results. We will change this to return only the curren user results.
+
+1. On the API project ToursController. inject UserInfoService.cs (updated):
+```
+[Route("api/tours")]
+    [Authorize]
+    public class ToursController : Controller
+    {
+        private readonly ITourManagementRepository _tourManagementRepository;
+        private readonly IUserInfoService _userInfoService;
+
+        public ToursController(ITourManagementRepository tourManagementRepository, IUserInfoService userInfoService)
+        {
+            _tourManagementRepository = tourManagementRepository;
+            _userInfoService = userInfoService;
+        }
+```
+1. Update the service with "role"
+```
+if (currentContext == null || !currentContext.User.Identity.IsAuthenticated)
+            {
+                //UserId = "n/a";
+                //FirstName = "n/a";
+                //LastName = "n/a";
+                return;
+            }
+            
+            UserId = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value) ?? "n/a";
+            FirstName = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value) ?? "n/a";
+            LastName = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value) ?? "n/a";
+            Role = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "role")?.Value) ?? "n/a";
+        }
+
+```
+1. Using the service update GetTours() on the controller:
+```
+[HttpGet]
+public async Task<IActionResult> GetTours()
+{
+    IEnumerable<Entities.Tour> toursFromRepo = new List<Entities.Tour>();
+
+    if (_userInfoService.Role == "Administrator")
+    {
+        toursFromRepo = await _tourManagementRepository.GetTours();
+    }
+    else
+    {
+        if (!Guid.TryParse(_userInfoService.UserId, out Guid userIdAsGuid))
+        {
+            return Forbid();
+        }
+
+        toursFromRepo = await _tourManagementRepository.GetToursForManager(userIdAsGuid);
+    }
+
+    var tours = Mapper.Map<IEnumerable<Tour>>(toursFromRepo);
+    return Ok(tours);
+}
+
+```
+1. Test results user Kevin see all tours (admin) but Sven only sees his tours. Good to Go!

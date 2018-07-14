@@ -13,7 +13,8 @@ namespace TourManagement.API.Services
         public string UserId { get; set; }
         public string FirstName { get; set; } 
         public string LastName { get; set; }
-        
+        public string Role { get; set; }
+
         public UserInfoService(IHttpContextAccessor httpContextAccessor)
         {
             // service is scoped, created once for each request => we only need
@@ -24,15 +25,16 @@ namespace TourManagement.API.Services
             var currentContext = _httpContextAccessor.HttpContext;
             if (currentContext == null || !currentContext.User.Identity.IsAuthenticated)
             {
-                UserId = "n/a";
-                FirstName = "n/a";
-                LastName = "n/a";
+                //UserId = "n/a";
+                //FirstName = "n/a";
+                //LastName = "n/a";
                 return;
             }
             
             UserId = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value) ?? "n/a";
             FirstName = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value) ?? "n/a";
             LastName = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value) ?? "n/a";
+            Role = (currentContext.User.Claims.FirstOrDefault(c => c.Type == "role")?.Value) ?? "n/a";
         }
     }
 }

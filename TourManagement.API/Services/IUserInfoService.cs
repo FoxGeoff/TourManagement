@@ -10,6 +10,6 @@ namespace TourManagement.API.Services
         string UserId { get; set; }
         string FirstName { get; set; }
         string LastName { get; set; }
-
+        string Role { get; set; }
     }
 }
