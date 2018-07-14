@@ -427,4 +427,18 @@ namespace TourManagement.API.Controllers
 ```
 repeat for each controller class
 
-## Requesting an Acess Token with the Correct Audience
+## Requesting an Access Token with the Correct Audience
+1. Add *token* and *tourmanagementapi* this will return an access token (check F12 application tab and jwt.io)
+```
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:44394/api/', // API
+  openIdConnectSettings: {
+    authority: 'https://localhost:44398/', // IDP
+    client_id: 'tourmanagementclient',
+    redirect_uri: 'https://localhost:4200/signin-oidc', // Angular
+    scope: 'openid profile roles tourmanagementapi',   // all claims + api
+    response_type: 'id_token token', // implict flow on access token > id + access token
+    post_logout_redirect_uri: 'https://localhost:4200/',
+  }
+};```

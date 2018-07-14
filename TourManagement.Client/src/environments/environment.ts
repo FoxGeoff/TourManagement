@@ -10,8 +10,8 @@ export const environment = {
     authority: 'https://localhost:44398/', // IDP
     client_id: 'tourmanagementclient',
     redirect_uri: 'https://localhost:4200/signin-oidc', // Angular
-    scope: 'openid profile roles',
-    response_type: 'id_token', // implict flow on access token
+    scope: 'openid profile roles tourmanagementapi',   // all claims + api
+    response_type: 'id_token token', // implict flow on access token > id + access token
     post_logout_redirect_uri: 'https://localhost:4200/',
   }
 };
