@@ -441,4 +441,42 @@ export const environment = {
     response_type: 'id_token token', // implict flow on access token > id + access token
     post_logout_redirect_uri: 'https://localhost:4200/',
   }
-};```
+};
+```
+
+## Passing an Access Token to the API
+
+1. Add a class:
+``` shared> ng g class AddAuthorizationHeaderInterceptor ```
+1. Code:
+```
+mport { Injectable, } from "@angular/core";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
+import { OpenIdConnectService } from "./open-id-connect.service";
+import { Observable } from "rxjs/Observable";
+
+@Injectable()
+export class AddAuthorizationHeaderInterceptor implements HttpInterceptor {
+    constructor(private openIdConnectService: OpenIdConnectService) { }
+
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        //add the access token as bearer token
+        request = request.clone(
+            {
+                setHeaders: { Authorization: this.openIdConnectService.use.token_type + " " + this.openIdConnectService.use.access_token }
+            });
+        return next.handle(request);
+    }
+}
+```
+1. add to the app.module.ts:
+```
+ providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AddAuthorizationHeaderInterceptor,
+      multi: true
+    },
+    {
+```
+1. Test we now see tour details - Good to go!
